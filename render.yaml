@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: balenjera
+    runtime: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && gunicorn app:app
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.11.0
