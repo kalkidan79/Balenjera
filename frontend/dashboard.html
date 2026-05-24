@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balenjera 🫂 | Your Dashboard - Wellness Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Dashboard Specific Styles */
+        body.balenjera-dashboard {
+            background: linear-gradient(135deg, #fefaf5 0%, #fff5ed 100%);
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 40px;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner::before {
+            content: "🫂";
+            position: absolute;
+            right: -20px;
+            top: -20px;
+            font-size: 150px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .welcome-banner h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .welcome-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .welcome-stat {
+            text-align: center;
+        }
+
+        .welcome-stat .number {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .welcome-stat .label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        /* Cards */
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .card-header h3 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header i {
+            color: #5e5bff;
+            font-size: 1.5rem;
+        }
+
+        .card-badge {
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Profile Info */
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .profile-details h4 {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .profile-details p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+
+        .profile-details i {
+            margin-right: 8px;
+            color: #5e5bff;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #f8f9ff, #fff);
+            border: 1px solid #e0e4e8;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn i {
+            font-size: 1.5rem;
+            color: #5e5bff;
+        }
+
+        .action-btn span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            border-color: #5e5bff;
+            box-shadow: 0 5px 15px rgba(94, 91, 255, 0.1);
+        }
+
+        /* Wellness Tips */
+        .wellness-tip {
+            background: linear-gradient(135deg, rgba(94, 91, 255, 0.05), rgba(255, 107, 157, 0.05));
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .wellness-tip i {
+            font-size: 2rem;
+            color: #5e5bff;
+            margin-bottom: 10px;
+        }
+
+        .wellness-tip p {
+            color: #2c3e50;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Chat History */
+        .chat-history-item {
+            padding: 15px;
+            border-bottom: 1px solid #f0f2f5;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .chat-history-item:hover {
+            background: #f8f9ff;
+        }
+
+        .chat-history-item:last-child {
+            border-bottom: none;
+        }
+
+        .chat-date {
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+
+        .chat-preview {
+            font-size: 0.9rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .chat-flag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .flag-urgent {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .flag-followup {
+            background: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+        }
+
+        .flag-normal {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+
+        /* Resources Section */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .resource-card {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .resource-card i {
+            font-size: 2rem;
+            color: #5e5bff;
+            margin-bottom: 10px;
+        }
+
+        .resource-card h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .resource-card p {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+        }
+
+        .resource-card:hover i,
+        .resource-card:hover h4,
+        .resource-card:hover p {
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 80px 15px 30px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="balenjera-dashboard">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>Balen<span class="logo-highlight">jera</span></span>
+            </div>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="chatbot.html"><i class="fas fa-comment-dots"></i> Chatbot</a>
+                <a href="books.html"><i class="fas fa-book"></i> Books</a>
+                <a href="music.html"><i class="fas fa-music"></i> Music</a>
+                <a href="pictures.html"><i class="fas fa-image"></i> Pictures</a>
+                <a href="healing.html"><i class="fas fa-heartbeat"></i> Healing</a>
+                <div class="nav-buttons">
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <h1 id="welcomeMessage">Welcome back, 🌸</h1>
+            <p>Your wellness journey matters. You're not alone - we're here for you 24/7.</p>
+            <div class="welcome-stats">
+                <div class="welcome-stat">
+                    <div class="number" id="chatCount">0</div>
+                    <div class="label">Wellness Chats</div>
+                </div>
+                <div class="welcome-stat">
+                    <div class="number" id="flagCount">0</div>
+                    <div class="label">Support Flags</div>
+                </div>
+                <div class="welcome-stat">
+                    <div class="number" id="streakDays">7</div>
+                    <div class="label">Day Streak 🔥</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Profile Card -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-user-circle"></i> My Profile</h3>
+                    <div class="card-badge" id="roleBadge">Student</div>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-avatar" id="userAvatar">U</div>
+                    <div class="profile-details">
+                        <h4 id="userName">Loading...</h4>
+                        <p><i class="fas fa-envelope"></i> <span id="userEmail">loading@email.com</span></p>
+                        <p><i class="fas fa-calendar"></i> Member since: <span id="memberSince">Today</span></p>
+                    </div>
+                </div>
+                <div class="quick-actions">
+                    <a href="chatbot.html" class="action-btn">
+                        <i class="fas fa-comment-dots"></i>
+                        <span>Chat with AI</span>
+                    </a>
+                    <a href="healing.html" class="action-btn">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Healing Tools</span>
+                    </a>
+                    <a href="books.html" class="action-btn">
+                        <i class="fas fa-book"></i>
+                        <span>Read Books</span>
+                    </a>
+                    <a href="music.html" class="action-btn">
+                        <i class="fas fa-music"></i>
+                        <span>Calming Music</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Daily Wellness Tip -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-lightbulb"></i> Daily Wellness Tip</h3>
+                    <i class="fas fa-sync-alt" style="cursor: pointer; color: #5e5bff;" onclick="refreshTip()"></i>
+                </div>
+                <div class="wellness-tip" id="wellnessTip">
+                    <i class="fas fa-heart"></i>
+                    <p>Take a deep breath. You are stronger than you think. Every small step towards self-care matters.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Recent Chats -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-history"></i> Recent Conversations</h3>
+                    <a href="chatbot.html" style="color: #5e5bff; font-size: 0.85rem;">Chat Now →</a>
+                </div>
+                <div id="chatHistoryList">
+                    <div class="empty-state">
+                        <i class="fas fa-comment-dots"></i>
+                        <p>No conversations yet. Start your first wellness chat!</p>
+                        <a href="chatbot.html" class="btn btn-primary" style="margin-top: 15px; display: inline-block;">
+                            Start Chatting
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Resources -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-graduation-cap"></i> Healing Resources</h3>
+                </div>
+                <div class="resources-grid">
+                    <a href="books.html" class="resource-card">
+                        <i class="fas fa-book"></i>
+                        <h4>Self-Help Books</h4>
+                        <p>Emotional growth & healing</p>
+                    </a>
+                    <a href="music.html" class="resource-card">
+                        <i class="fas fa-music"></i>
+                        <h4>Calming Music</h4>
+                        <p>Relax & de-stress</p>
+                    </a>
+                    <a href="pictures.html" class="resource-card">
+                        <i class="fas fa-image"></i>
+                        <h4>Peaceful Pictures</h4>
+                        <p>Visual calmness</p>
+                    </a>
+                    <a href="healing.html" class="resource-card">
+                        <i class="fas fa-clock"></i>
+                        <h4>Breathing Timer</h4>
+                        <p>Find your calm</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flag Status Info -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3><i class="fas fa-flag-checkered"></i> About Support Flags</h3>
+            </div>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1;">
+                    <div class="chat-flag flag-normal" style="display: inline-block;">🟢 Normal</div>
+                    <p style="margin-top: 10px; color: #7f8c8d; font-size: 0.85rem;">Your conversation was normal. Keep practicing self-care!</p>
+                </div>
+                <div style="flex: 1;">
+                    <div class="chat-flag flag-followup" style="display: inline-block;">🟡 Follow-up</div>
+                    <p style="margin-top: 10px; color: #7f8c8d; font-size: 0.85rem;">AI noticed you might need extra support. A counselor may check in.</p>
+                </div>
+                <div style="flex: 1;">
+                    <div class="chat-flag flag-urgent" style="display: inline-block;">🔴 Urgent</div>
+                    <p style="margin-top: 10px; color: #7f8c8d; font-size: 0.85rem;">Please reach out to a counselor immediately. You're not alone!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Dashboard specific JavaScript
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('📊 Dashboard loading...');
+            
+            // Check authentication
+            const { isLoggedIn, userData } = checkAuth();
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Display user info
+            displayUserInfo(userData);
+            
+            // Load chat history from localStorage
+            loadChatHistory();
+            
+            // Update stats
+            updateStats();
+        });
+        
+        function displayUserInfo(userData) {
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+            const userAvatar = document.getElementById('userAvatar');
+            const roleBadge = document.getElementById('roleBadge');
+            const memberSinceSpan = document.getElementById('memberSince');
+            
+            if (welcomeMsg) {
+                welcomeMsg.innerHTML = `Welcome back, ${userData.name || 'Friend'}! 🌸`;
+            }
+            if (userName) userName.textContent = userData.name || 'Student';
+            if (userEmail) userEmail.textContent = userData.email || 'student@school.edu';
+            if (userAvatar) {
+                const initial = (userData.name || 'S').charAt(0).toUpperCase();
+                userAvatar.textContent = initial;
+            }
+            if (roleBadge) {
+                roleBadge.textContent = userData.role === 'counselor' ? 'Counselor' : 'Student';
+                roleBadge.style.background = userData.role === 'counselor' 
+                    ? 'linear-gradient(135deg, #f39c12, #e67e22)' 
+                    : 'linear-gradient(135deg, #5e5bff, #ff6b9d)';
+            }
+            
+            // Member since (from localStorage or current date)
+            let memberSince = localStorage.getItem('balenjeraMemberSince');
+            if (!memberSince && userData.created_at) {
+                memberSince = new Date(userData.created_at).toLocaleDateString();
+            } else if (!memberSince) {
+                memberSince = new Date().toLocaleDateString();
+                localStorage.setItem('balenjeraMemberSince', memberSince);
+            }
+            if (memberSinceSpan) memberSinceSpan.textContent = memberSince;
+        }
+        
+        function loadChatHistory() {
+            // Load chat history from localStorage
+            const chatHistory = JSON.parse(localStorage.getItem('balenjeraChatHistory') || '[]');
+            const chatList = document.getElementById('chatHistoryList');
+            
+            if (!chatList) return;
+            
+            if (chatHistory.length === 0) {
+                chatList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-comment-dots"></i>
+                        <p>No conversations yet. Start your first wellness chat!</p>
+                        <a href="chatbot.html" class="btn btn-primary" style="margin-top: 15px; display: inline-block;">
+                            Start Chatting
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Show last 5 chats
+            const recentChats = chatHistory.slice(-5).reverse();
+            chatList.innerHTML = recentChats.map(chat => `
+                <div class="chat-history-item" onclick="window.location.href='chatbot.html'">
+                    <div class="chat-date">${new Date(chat.timestamp).toLocaleString()}</div>
+                    <div class="chat-preview">${chat.preview || chat.messages?.[0]?.substring(0, 80) || 'Wellness conversation'}</div>
+                    <span class="chat-flag flag-${chat.severity || 'normal'}">
+                        ${chat.severity === 'urgent' ? '🔴 Urgent' : chat.severity === 'follow-up' ? '🟡 Follow-up' : '🟢 Normal'}
+                    </span>
+                </div>
+            `).join('');
+        }
+        
+        function updateStats() {
+            const chatHistory = JSON.parse(localStorage.getItem('balenjeraChatHistory') || '[]');
+            const chatCountSpan = document.getElementById('chatCount');
+            const flagCountSpan = document.getElementById('flagCount');
+            
+            if (chatCountSpan) chatCountSpan.textContent = chatHistory.length;
+            
+            // Count flagged conversations
+            const flaggedCount = chatHistory.filter(chat => chat.severity && chat.severity !== 'normal').length;
+            if (flagCountSpan) flagCountSpan.textContent = flaggedCount;
+        }
+        
+        // Wellness tips array
+        const wellnessTips = [
+            { icon: "🌸", tip: "Take 5 deep breaths. Inhale peace, exhale stress." },
+            { icon: "💪", tip: "You've overcome 100% of your worst days. You're stronger than you know." },
+            { icon: "📝", tip: "Write down three things you're grateful for today." },
+            { icon: "🚶", tip: "Take a 5-minute walk outside. Fresh air helps clear the mind." },
+            { icon: "💧", tip: "Drink a glass of water. Hydration affects mood more than you think." },
+            { icon: "😴", tip: "Aim for 7-8 hours of sleep. Rest is not lazy - it's healing." },
+            { icon: "🤝", tip: "Reach out to one friend today. Connection reduces loneliness." },
+            { icon: "🎨", tip: "Do something creative - draw, write, or make music." },
+            { icon: "🧘", tip: "Try 2 minutes of meditation. Just focus on your breathing." },
+            { icon: "💬", tip: "It's okay to not be okay. Talking helps - we're here for you." }
+        ];
+        
+        let currentTipIndex = Math.floor(Math.random() * wellnessTips.length);
+        
+        function refreshTip() {
+            currentTipIndex = (currentTipIndex + 1) % wellnessTips.length;
+            const tip = wellnessTips[currentTipIndex];
+            const tipContainer = document.getElementById('wellnessTip');
+            if (tipContainer) {
+                tipContainer.innerHTML = `
+                    <i class="fas fa-heart"></i>
+                    <p>${tip.tip}</p>
+                `;
+            }
+        }
+        
+        // Auto-rotate tip every 30 seconds
+        setInterval(refreshTip, 30000);
+        
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('balenjeraLoggedIn') === 'true';
+            const userData = JSON.parse(localStorage.getItem('balenjeraUser') || '{}');
+            return { isLoggedIn, userData };
+        }
+    </script>
+</body>
+</html>

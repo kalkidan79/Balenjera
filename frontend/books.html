@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balenjera 📚 | Self-Help Books for Healing & Growth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Books Page Specific Styles */
+        body.balenjera-books {
+            background: linear-gradient(135deg, #fefaf5 0%, #fff5ed 100%);
+            min-height: 100vh;
+        }
+
+        .books-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 60px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 i {
+            color: #5e5bff;
+            margin-right: 10px;
+        }
+
+        .page-header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: white;
+            border: 2px solid #e0e4e8;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #2c3e50;
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+            border-color: transparent;
+            color: white;
+        }
+
+        .category-btn:hover:not(.active) {
+            border-color: #5e5bff;
+            transform: translateY(-2px);
+        }
+
+        /* Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-cover {
+            height: 280px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-cover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .book-card:hover .book-cover-overlay {
+            opacity: 1;
+        }
+
+        .read-book-btn {
+            background: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #5e5bff;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .read-book-btn:hover {
+            transform: scale(1.05);
+            background: #5e5bff;
+            color: white;
+        }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .book-author {
+            color: #5e5bff;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .book-description {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .book-category {
+            display: inline-block;
+            background: #f0f2f5;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            color: #5e5bff;
+            font-weight: 600;
+        }
+
+        /* PDF Viewer Modal */
+        .pdf-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .pdf-modal.active {
+            display: flex;
+        }
+
+        .pdf-modal-content {
+            width: 90%;
+            height: 90%;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .pdf-modal-header {
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .pdf-modal-header h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pdf-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .pdf-close:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .pdf-viewer {
+            flex: 1;
+            width: 100%;
+            border: none;
+        }
+
+        /* No PDF Available State */
+        .no-pdf-message {
+            background: #f8f9ff;
+            padding: 40px;
+            text-align: center;
+            border-radius: 15px;
+            margin: 20px;
+        }
+
+        .no-pdf-message i {
+            font-size: 3rem;
+            color: #5e5bff;
+            margin-bottom: 15px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #7f8c8d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pdf-modal-content {
+                width: 95%;
+                height: 95%;
+            }
+        }
+    </style>
+</head>
+<body class="balenjera-books">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>Balen<span class="logo-highlight">jera</span></span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="chatbot.html"><i class="fas fa-comment-dots"></i> Chatbot</a>
+                <a href="books.html" class="active"><i class="fas fa-book"></i> Books</a>
+                <a href="music.html"><i class="fas fa-music"></i> Music</a>
+                <a href="pictures.html"><i class="fas fa-image"></i> Pictures</a>
+                <a href="healing.html"><i class="fas fa-heartbeat"></i> Healing</a>
+                <div class="nav-buttons">
+                    <a href="dashboard.html" class="btn btn-primary">
+                        <i class="fas fa-user-circle"></i> Dashboard
+                    </a>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="books-container">
+        <div class="page-header">
+            <h1><i class="fas fa-book-open"></i> Self-Help Library</h1>
+            <p>Discover books for emotional growth, healing, and personal development</p>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs" id="categoryTabs">
+            <button class="category-btn active" data-category="all">📚 All Books</button>
+            <button class="category-btn" data-category="emotional">💙 Emotional Wellness</button>
+            <button class="category-btn" data-category="mindfulness">🧘 Mindfulness</button>
+            <button class="category-btn" data-category="motivation">⭐ Motivation</button>
+        </div>
+
+        <!-- Books Grid -->
+        <div class="books-grid" id="booksGrid">
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading books...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Viewer Modal -->
+    <div class="pdf-modal" id="pdfModal">
+        <div class="pdf-modal-content">
+            <div class="pdf-modal-header">
+                <h3><i class="fas fa-book"></i> <span id="pdfBookTitle">Reading Book</span></h3>
+                <button class="pdf-close" onclick="closePDFModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <iframe class="pdf-viewer" id="pdfViewer" src=""></iframe>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Book Database with LOCAL PDF paths
+        const booksDatabase = {
+            all: [
+                {
+                    id: 1,
+                    title: "The Gifts of Imperfection",
+                    author: "Brené Brown",
+                    description: "Let go of who you think you're supposed to be and embrace who you are.",
+                    fullDescription: "In this book, Brené Brown shares ten guideposts that help you cultivate courage, compassion, and connection. It's about embracing your imperfections and living a wholehearted life.",
+                    coverImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300",
+                    category: "emotional",
+                    pdfPath: "pdfs/the-gifts-of-imperfection.pdf",  // Local PDF file
+                    tags: ["Self-Acceptance", "Courage", "Authenticity"]
+                },
+                {
+                    id: 2,
+                    title: "Emotional Intelligence 2.0",
+                    author: "Travis Bradberry",
+                    description: "Learn to understand and manage your emotions effectively for better relationships.",
+                    fullDescription: "Emotional Intelligence 2.0 delivers a step-by-step program for increasing your EQ via four core skills: self-awareness, self-management, social awareness, and relationship management.",
+                    coverImage: "https://images.unsplash.com/photo-1589998059171-988d887df646?w=300",
+                    category: "emotional",
+                    pdfPath: "pdfs/emotional-intelligence.pdf",
+                    tags: ["EQ", "Self-Awareness", "Relationships"]
+                },
+                {
+                    id: 3,
+                    title: "The Power of Now",
+                    author: "Eckhart Tolle",
+                    description: "A guide to spiritual enlightenment and stress reduction through present-moment awareness.",
+                    fullDescription: "Eckhart Tolle shows how living in the present moment is the path to joy and peace. This book has helped millions break free from anxiety and find inner calm.",
+                    coverImage: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300",
+                    category: "mindfulness",
+                    pdfPath: "pdfs/the-power-of-now.pdf",
+                    tags: ["Mindfulness", "Present Moment", "Peace"]
+                },
+                {
+                    id: 4,
+                    title: "Daring Greatly",
+                    author: "Brené Brown",
+                    description: "How the courage to be vulnerable transforms the way we live, love, parent, and lead.",
+                    fullDescription: "Based on twelve years of research, Brené Brown argues that vulnerability is not weakness but our greatest measure of courage.",
+                    coverImage: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300",
+                    category: "emotional",
+                    pdfPath: "pdfs/daring-greatly.pdf",
+                    tags: ["Vulnerability", "Courage", "Authenticity"]
+                },
+                {
+                    id: 5,
+                    title: "Atomic Habits",
+                    author: "James Clear",
+                    description: "Small changes that lead to remarkable results. Learn how to build good habits.",
+                    fullDescription: "Atomic Habits shows how tiny changes can transform your life. James Clear reveals practical strategies that will teach you exactly how to form good habits.",
+                    coverImage: "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300",
+                    category: "motivation",
+                    pdfPath: "pdfs/atomic-habits.pdf",
+                    tags: ["Habits", "Productivity", "Growth"]
+                },
+                {
+                    id: 6,
+                    title: "The 7 Habits of Highly Effective Teens",
+                    author: "Sean Covey",
+                    description: "A best-selling guide to help teens navigate challenges and build confidence.",
+                    fullDescription: "Based on his father's bestselling The 7 Habits of Highly Effective People, Sean Covey applies the same principles to teenagers.",
+                    coverImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300",
+                    category: "motivation",
+                    pdfPath: "pdfs/7-habits-teens.pdf",
+                    tags: ["Teens", "Habits", "Success"]
+                },
+                {
+                    id: 7,
+                    title: "Wherever You Go, There You Are",
+                    author: "Jon Kabat-Zinn",
+                    description: "Mindfulness meditation for everyday life. Find peace in the present moment.",
+                    fullDescription: "This classic introduction to mindfulness explains how to incorporate meditation into daily life.",
+                    coverImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=300",
+                    category: "mindfulness",
+                    pdfPath: "pdfs/wherever-you-go.pdf",
+                    tags: ["Meditation", "Stress Relief", "Calm"]
+                },
+                {
+                    id: 8,
+                    title: "Mindset: The New Psychology of Success",
+                    author: "Carol S. Dweck",
+                    description: "How we can learn to fulfill our potential by changing our mindset.",
+                    fullDescription: "World-renowned Stanford psychologist Carol Dweck explains why success is not determined by talent but by mindset.",
+                    coverImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300",
+                    category: "motivation",
+                    pdfPath: "pdfs/mindset.pdf",
+                    tags: ["Growth Mindset", "Success", "Learning"]
+                }
+            ]
+        };
+
+        let currentCategory = "all";
+
+        // Load books on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('📚 Books page loaded');
+            loadBooks();
+            setupCategoryListeners();
+        });
+
+        function setupCategoryListeners() {
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentCategory = btn.getAttribute('data-category');
+                    loadBooks();
+                });
+            });
+        }
+
+        function loadBooks() {
+            const booksGrid = document.getElementById('booksGrid');
+            
+            let booksToShow = booksDatabase.all;
+            if (currentCategory !== 'all') {
+                booksToShow = booksDatabase.all.filter(book => book.category === currentCategory);
+            }
+            
+            if (booksToShow.length === 0) {
+                booksGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-book-open"></i>
+                        <p>No books in this category yet.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            booksGrid.innerHTML = booksToShow.map(book => `
+                <div class="book-card" onclick="openBook(${book.id})">
+                    <div class="book-cover" style="background-image: url('${book.coverImage}')">
+                        <div class="book-cover-overlay">
+                            <button class="read-book-btn">
+                                <i class="fas fa-book-open"></i> Read Now
+                            </button>
+                        </div>
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">${escapeHtml(book.title)}</h3>
+                        <div class="book-author">
+                            <i class="fas fa-user-pen"></i> ${escapeHtml(book.author)}
+                        </div>
+                        <p class="book-description">${escapeHtml(book.description)}</p>
+                        <span class="book-category">${getCategoryIcon(book.category)} ${getCategoryName(book.category)}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openBook(bookId) {
+            const book = booksDatabase.all.find(b => b.id === bookId);
+            if (!book) return;
+            
+            const pdfModal = document.getElementById('pdfModal');
+            const pdfViewer = document.getElementById('pdfViewer');
+            const pdfBookTitle = document.getElementById('pdfBookTitle');
+            
+            pdfBookTitle.textContent = book.title;
+            
+            // Check if PDF exists locally
+            const pdfPath = book.pdfPath;
+            
+            // Try to load the PDF
+            fetch(pdfPath, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        // PDF exists - load it
+                        pdfViewer.src = pdfPath;
+                        pdfModal.classList.add('active');
+                    } else {
+                        // PDF doesn't exist - show message
+                        showNoPDFMessage(book);
+                    }
+                })
+                .catch(() => {
+                    showNoPDFMessage(book);
+                });
+        }
+        
+        function showNoPDFMessage(book) {
+            const pdfModal = document.getElementById('pdfModal');
+            const pdfViewer = document.getElementById('pdfViewer');
+            const pdfBookTitle = document.getElementById('pdfBookTitle');
+            
+            pdfBookTitle.textContent = book.title;
+            
+            // Create an HTML message instead of PDF
+            const messageHTML = `
+                <div class="no-pdf-message">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>PDF Not Available Yet</h3>
+                    <p>The book "${book.title}" is not yet uploaded to our library.</p>
+                    <p style="margin-top: 15px;">📌 <strong>How to add this book:</strong></p>
+                    <ol style="text-align: left; max-width: 400px; margin: 15px auto;">
+                        <li>Download the PDF file for "${book.title}"</li>
+                        <li>Place it in the <code>frontend/pdfs/</code> folder</li>
+                        <li>Name it: <code>${book.pdfPath.split('/').pop()}</code></li>
+                        <li>Refresh this page</li>
+                    </ol>
+                    <p style="margin-top: 20px; color: #5e5bff;">
+                        <i class="fas fa-info-circle"></i> You can also request this book from your school counselor.
+                    </p>
+                </div>
+            `;
+            
+            // Display message in iframe (as HTML)
+            const blob = new Blob([messageHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            pdfViewer.src = url;
+            pdfModal.classList.add('active');
+        }
+        
+        function closePDFModal() {
+            const pdfModal = document.getElementById('pdfModal');
+            const pdfViewer = document.getElementById('pdfViewer');
+            pdfModal.classList.remove('active');
+            // Clear the src to stop any ongoing loading
+            setTimeout(() => {
+                pdfViewer.src = '';
+            }, 300);
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                emotional: "💙",
+                mindfulness: "🧘",
+                motivation: "⭐",
+                all: "📚"
+            };
+            return icons[category] || "📖";
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                emotional: "Emotional Wellness",
+                mindfulness: "Mindfulness",
+                motivation: "Motivation",
+                all: "All Books"
+            };
+            return names[category] || category;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePDFModal();
+            }
+        });
+    </script>
+</body>
+</html>

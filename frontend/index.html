@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balenjera 🫂 | Your AI Wellness Companion for Boarding Students</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="balenjera-home">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>Balen<span class="logo-highlight">jera</span></span>
+                <span class="logo-badge">🐘</span>
+            </div>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
+                <a href="chatbot.html"><i class="fas fa-comment-dots"></i> Chatbot</a>
+                <a href="books.html"><i class="fas fa-book"></i> Books</a>
+                <a href="music.html"><i class="fas fa-music"></i> Music</a>
+                <a href="pictures.html"><i class="fas fa-image"></i> Pictures</a>
+                <a href="healing.html"><i class="fas fa-heartbeat"></i> Healing</a>
+                <div class="nav-buttons">
+                    <a href="login.html" class="btn btn-outline" id="loginNavBtn">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </a>
+                    <a href="dashboard.html" class="btn btn-primary" id="dashboardNavBtn" style="display: none;">
+                        <i class="fas fa-user-circle"></i> Dashboard
+                    </a>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-shield-heart"></i> Anonymous & Safe
+                </div>
+                <h1 class="hero-title">
+                    Your <span class="gradient-text">AI Best Friend</span><br>
+                    for Mental Wellness
+                </h1>
+                <p class="hero-subtitle">
+                    Balenjera (አጋር) - meaning "Best Friend" in Amharic. An anonymous AI companion 
+                    that listens, supports, and helps boarding school students navigate emotional challenges 
+                    with compassion and care.
+                </p>
+                <div class="hero-cta">
+                    <a href="chatbot.html" class="btn btn-primary btn-lg" id="startChatBtn">
+                        <i class="fas fa-comment-dots"></i> Start Anonymous Chat
+                    </a>
+                    <a href="#research" class="btn btn-outline btn-lg">
+                        <i class="fas fa-chart-line"></i> See Research
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="statStudents">0</span>
+                        <span class="stat-label">Students Helped</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="statChats">0</span>
+                        <span class="stat-label">Anonymous Chats</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="statFlags">0</span>
+                        <span class="stat-label">Early Flags Raised</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="dashboard-preview">
+                    <div class="preview-header">
+                        <div class="preview-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="preview-title">Balenjera AI 🤖</div>
+                    </div>
+                    <div class="preview-content">
+                        <div class="chat-preview">
+                            <div class="chat-message student">
+                                <div class="message-bubble">
+                                    I've been feeling really alone lately...
+                                </div>
+                                <span class="message-time">Just now</span>
+                            </div>
+                            <div class="chat-message ai">
+                                <div class="message-bubble">
+                                    I hear you. You're not alone. Would you like to talk about what's on your mind? 💙
+                                </div>
+                                <span class="message-time">Just now</span>
+                            </div>
+                            <div class="chat-message student">
+                                <div class="message-bubble">
+                                    Exams are stressing me out and I miss home 😔
+                                </div>
+                                <span class="message-time">Just now</span>
+                            </div>
+                            <div class="chat-message ai">
+                                <div class="message-bubble">
+                                    That's completely normal to feel that way. Let's take a deep breath together... 🫂
+                                </div>
+                                <span class="message-time">Just now</span>
+                            </div>
+                            <div class="chat-typing">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Results Section -->
+    <section id="research" class="section research">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">📊 Research Results</h2>
+                <p class="section-subtitle">Why AI Wellbeing Chatbots Are Essential for Boarding Students</p>
+            </div>
+            
+            <div class="research-grid">
+                <div class="research-card">
+                    <div class="research-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="research-stat">40-60%</div>
+                    <h3>High Stress Levels</h3>
+                    <p>of boarding school students report moderate to high stress levels (UNESCO, 2022)</p>
+                </div>
+                
+                <div class="research-card">
+                    <div class="research-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="research-stat">1:500+</div>
+                    <h3>Counselor Ratio</h3>
+                    <p>Only 1 counselor per 500+ students in Ethiopian boarding schools (Ministry of Education, 2023)</p>
+                </div>
+                
+                <div class="research-card">
+                    <div class="research-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="research-stat">70%</div>
+                    <h3>Prefer Anonymous Tools</h3>
+                    <p>of teens would NOT talk to a counselor face-to-face but would use an anonymous digital tool (Pew Research, 2023)</p>
+                </div>
+                
+                <div class="research-card">
+                    <div class="research-icon">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                    <div class="research-stat">47%</div>
+                    <h3>Crisis Reduction</h3>
+                    <p>Early intervention reduces severe mental health crises by 47% (WHO, 2021)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="section comparison">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🔄 Traditional vs AI-Powered Support</h2>
+                <p class="section-subtitle">Why Balenjera is different</p>
+            </div>
+            
+            <div class="comparison-table">
+                <div class="comparison-row header">
+                    <div class="comparison-cell">Feature</div>
+                    <div class="comparison-cell">Traditional Methods</div>
+                    <div class="comparison-cell">Balenjera AI Chatbot</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Student Honesty</div>
+                    <div class="comparison-cell traditional">😟 Students hide feelings</div>
+                    <div class="comparison-cell ai">😊 Anonymous → honest sharing</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Accessibility</div>
+                    <div class="comparison-cell traditional">📋 Counselor ratio too high</div>
+                    <div class="comparison-cell ai">🌍 Scalable to all students</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Availability</div>
+                    <div class="comparison-cell traditional">⏰ Office hours only</div>
+                    <div class="comparison-cell ai">🕐 24/7 available</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Approach</div>
+                    <div class="comparison-cell traditional">⚠️ Reactive (wait for crisis)</div>
+                    <div class="comparison-cell ai">🚀 Proactive (flags early signs)</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Privacy</div>
+                    <div class="comparison-cell traditional">😰 Fear of judgment</div>
+                    <div class="comparison-cell ai">🔒 Complete anonymity</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">💚 What Makes Balenjera Special?</h2>
+                <p class="section-subtitle">Designed with boarding students in mind</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Wellness Companion</h3>
+                    <p>Gemini AI-powered chatbot that listens without judgment and provides emotional support 24/7.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>100% Anonymous</h3>
+                    <p>Share your feelings openly without fear. Counselors see flagged cases anonymously.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <h3>Early Flag System</h3>
+                    <p>AI detects distress signs and flags students for counselor follow-up before crises develop.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Self-Help Library</h3>
+                    <p>Curated books, calming music, and peaceful pictures for emotional healing.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Breathing Timer</h3>
+                    <p>Guided breathing exercises to reduce anxiety and find calm moments.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chalkboard-user"></i>
+                    </div>
+                    <h3>Counselor Dashboard</h3>
+                    <p>Separate portal for counselors to view flagged cases and provide timely support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🌟 What Students Say</h2>
+                <p class="section-subtitle">Real voices from boarding schools</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p>"I was too embarrassed to talk to anyone. Balenjera helped me open up about my anxiety."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Grade 11 Student</h4>
+                            <span>Anonymous User</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p>"The breathing exercises helped me calm down before my exams. I feel less alone now."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Grade 10 Student</h4>
+                            <span>Anonymous User</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p>"Finally, a safe space where I can be honest about my feelings without being judged."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Grade 12 Student</h4>
+                            <span>Anonymous User</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>You Are Not Alone 💙</h2>
+                <p>Start your anonymous wellness journey today. Your AI best friend is always here to listen.</p>
+                <a href="chatbot.html" class="btn btn-primary btn-xl">
+                    <i class="fas fa-comment-dots"></i> Start Chatting Anonymously
+                </a>
+                <p class="cta-note">🔒 100% Anonymous • 💬 AI-Powered Support • 🫂 Always Here for You</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <i class="fas fa-hands-helping"></i>
+                        <span>Balen<span class="logo-highlight">jera</span></span>
+                    </div>
+                    <p class="footer-description">
+                        An anonymous AI wellness companion for boarding school students. 
+                        Because every student deserves a friend who listens.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="chatbot.html"><i class="fas fa-comment-dots"></i> AI Chatbot</a></li>
+                        <li><a href="books.html"><i class="fas fa-book"></i> Books</a></li>
+                        <li><a href="music.html"><i class="fas fa-music"></i> Music</a></li>
+                        <li><a href="pictures.html"><i class="fas fa-image"></i> Pictures</a></li>
+                        <li><a href="healing.html"><i class="fas fa-heartbeat"></i> Healing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Emergency Helplines</a></li>
+                        <li><a href="#">Mental Health Tips</a></li>
+                        <li><a href="#">Counselor Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@balenjera.com</li>
+                        <li><i class="fas fa-phone"></i> 800-BALENJERA</li>
+                        <li><i class="fas fa-clock"></i> 24/7 Available</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Balenjera. Making mental wellness accessible to every student. 🐘</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Animate stats counter
+        function animateStats() {
+            const stats = [
+                { element: document.getElementById('statStudents'), target: 1247 },
+                { element: document.getElementById('statChats'), target: 8923 },
+                { element: document.getElementById('statFlags'), target: 156 }
+            ];
+            
+            stats.forEach(stat => {
+                if (!stat.element) return;
+                let current = 0;
+                const increment = stat.target / 50;
+                const interval = setInterval(() => {
+                    current += increment;
+                    if (current >= stat.target) {
+                        stat.element.textContent = stat.target.toLocaleString() + '+';
+                        clearInterval(interval);
+                    } else {
+                        stat.element.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 30);
+            });
+        }
+        
+        // Start animation when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            animateStats();
+            
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('balenjeraLoggedIn') === 'true';
+            if (isLoggedIn) {
+                const loginBtn = document.getElementById('loginNavBtn');
+                const dashboardBtn = document.getElementById('dashboardNavBtn');
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (dashboardBtn) dashboardBtn.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balenjera 🖼️ | Calming Pictures for Peace & Inspiration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Pictures Page Specific Styles */
+        body.balenjera-pictures {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+
+        .pictures-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 20px 60px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 i {
+            color: #72efdd;
+            margin-right: 10px;
+        }
+
+        .page-header p {
+            color: #a5b4cb;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Category Filters */
+        .picture-filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+            border-color: transparent;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        .lightbox-caption {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.1);
+        }
+
+        .lightbox-prev, .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+
+        .lightbox-prev:hover, .lightbox-next:hover {
+            background: rgba(255,255,255,0.4);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        /* Pictures Grid - Masonry Style */
+        .pictures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .picture-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .picture-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(94, 91, 255, 0.3);
+        }
+
+        .picture-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s;
+        }
+
+        .picture-card:hover .picture-image {
+            transform: scale(1.05);
+        }
+
+        .picture-info {
+            padding: 18px;
+        }
+
+        .picture-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .picture-description {
+            font-size: 0.85rem;
+            color: #a5b4cb;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .picture-category {
+            display: inline-block;
+            background: rgba(94, 91, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            color: #5e5bff;
+            font-weight: 500;
+        }
+
+        /* Quote Cards */
+        .quote-card {
+            background: linear-gradient(135deg, rgba(94, 91, 255, 0.1), rgba(255, 107, 157, 0.1));
+            border: 1px solid rgba(94, 91, 255, 0.2);
+        }
+
+        .quote-card .picture-info {
+            text-align: center;
+        }
+
+        .quote-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: white;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .quote-author {
+            color: #72efdd;
+            font-size: 0.85rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #a5b4cb;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .picture-card {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @media (max-width: 768px) {
+            .pictures-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .lightbox-prev, .lightbox-next {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 10px; }
+        }
+    </style>
+</head>
+<body class="balenjera-pictures">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>Balen<span class="logo-highlight">jera</span></span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="chatbot.html"><i class="fas fa-comment-dots"></i> Chatbot</a>
+                <a href="books.html"><i class="fas fa-book"></i> Books</a>
+                <a href="music.html"><i class="fas fa-music"></i> Music</a>
+                <a href="pictures.html" class="active"><i class="fas fa-image"></i> Pictures</a>
+                <a href="healing.html"><i class="fas fa-heartbeat"></i> Healing</a>
+                <div class="nav-buttons">
+                    <a href="dashboard.html" class="btn btn-primary">
+                        <i class="fas fa-user-circle"></i> Dashboard
+                    </a>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="pictures-container">
+        <div class="page-header">
+            <h1><i class="fas fa-images"></i> Peaceful Gallery</h1>
+            <p>Find calm, inspiration, and peace through beautiful imagery</p>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="picture-filters" id="pictureFilters">
+            <button class="filter-btn active" data-category="all">🖼️ All</button>
+            <button class="filter-btn" data-category="nature">🌿 Nature</button>
+            <button class="filter-btn" data-category="motivational">⭐ Motivational</button>
+            <button class="filter-btn" data-category="calm">🌊 Calm</button>
+            <button class="filter-btn" data-category="quotes">💬 Quotes</button>
+        </div>
+
+        <!-- Pictures Grid -->
+        <div class="pictures-grid" id="picturesGrid">
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading peaceful images...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <button class="lightbox-prev" onclick="prevImage()">❮</button>
+        <button class="lightbox-next" onclick="nextImage()">❯</button>
+        <div class="lightbox-content">
+            <img class="lightbox-image" id="lightboxImage" alt="">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Pictures Database (Easy to replace with your own images)
+        const picturesDatabase = {
+            all: [
+                // Nature Pictures
+                {
+                    id: 1,
+                    title: "Misty Mountain Lake",
+                    description: "Peaceful morning mist over a calm mountain lake. Let the stillness wash over you.",
+                    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600",
+                    category: "nature",
+                    type: "image"
+                },
+                {
+                    id: 2,
+                    title: "Sunset Beach Waves",
+                    description: "Golden sunset over gentle ocean waves. A moment of pure tranquility.",
+                    imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600",
+                    category: "nature",
+                    type: "image"
+                },
+                {
+                    id: 3,
+                    title: "Enchanted Forest Path",
+                    description: "Sunlight filtering through ancient trees. Take a deep breath and walk slowly.",
+                    imageUrl: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600",
+                    category: "nature",
+                    type: "image"
+                },
+                {
+                    id: 4,
+                    title: "Calming Waterfall",
+                    description: "The sound of flowing water washes away stress. Close your eyes and imagine being here.",
+                    imageUrl: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=600",
+                    category: "nature",
+                    type: "image"
+                },
+                {
+                    id: 5,
+                    title: "Cherry Blossom Peace",
+                    description: "Spring blossoms remind us that beauty returns after every winter.",
+                    imageUrl: "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=600",
+                    category: "nature",
+                    type: "image"
+                },
+                {
+                    id: 6,
+                    title: "Starry Night Sky",
+                    description: "Look up at the stars. Your problems are smaller than the universe.",
+                    imageUrl: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600",
+                    category: "calm",
+                    type: "image"
+                },
+                
+                // Calming Pictures
+                {
+                    id: 7,
+                    title: "Reading by Window Light",
+                    description: "Quiet moments of solitude can be the most healing.",
+                    imageUrl: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=600",
+                    category: "calm",
+                    type: "image"
+                },
+                {
+                    id: 8,
+                    title: "Morning Coffee Calm",
+                    description: "Start your day slowly. You don't have to rush through life.",
+                    imageUrl: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=600",
+                    category: "calm",
+                    type: "image"
+                },
+                {
+                    id: 9,
+                    title: "Meditation Space",
+                    description: "Create a peaceful corner just for you. Even 5 minutes helps.",
+                    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600",
+                    category: "calm",
+                    type: "image"
+                },
+                
+                // Motivational Pictures
+                {
+                    id: 10,
+                    title: "You Are Stronger Than You Know",
+                    description: "Every challenge you've faced has made you stronger. Keep going.",
+                    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600",
+                    category: "motivational",
+                    type: "quote"
+                },
+                {
+                    id: 11,
+                    title: "One Step at a Time",
+                    description: "You don't have to see the whole path. Just take the next step.",
+                    imageUrl: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600",
+                    category: "motivational",
+                    type: "image"
+                },
+                {
+                    id: 12,
+                    title: "Growth Takes Time",
+                    description: "Like a tree, you grow slowly but surely. Be patient with yourself.",
+                    imageUrl: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600",
+                    category: "motivational",
+                    type: "image"
+                },
+                
+                // Quote Cards
+                {
+                    id: 13,
+                    title: "Quote",
+                    description: "You yourself, as much as anybody in the entire universe, deserve your love and affection.",
+                    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600",
+                    category: "quotes",
+                    type: "quote",
+                    author: "Buddha"
+                },
+                {
+                    id: 14,
+                    title: "Quote",
+                    description: "This too shall pass. It may pass like a kidney stone, but it will pass.",
+                    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600",
+                    category: "quotes",
+                    type: "quote",
+                    author: "Unknown"
+                },
+                {
+                    id: 15,
+                    title: "Quote",
+                    description: "The sun will rise, and we will try again.",
+                    imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600",
+                    category: "quotes",
+                    type: "quote",
+                    author: "Unknown"
+                },
+                {
+                    id: 16,
+                    title: "Quote",
+                    description: "You are not a drop in the ocean. You are the entire ocean in a drop.",
+                    imageUrl: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600",
+                    category: "quotes",
+                    type: "quote",
+                    author: "Rumi"
+                },
+                {
+                    id: 17,
+                    title: "Mountain Peak",
+                    description: "The view from the top is worth the climb. Keep going.",
+                    imageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600",
+                    category: "nature",
+                    type: "image"
+                },
+                {
+                    id: 18,
+                    title: "Quote",
+                    description: "Healing doesn't mean the damage never existed. It means it no longer controls your life.",
+                    imageUrl: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600",
+                    category: "quotes",
+                    type: "quote",
+                    author: "Unknown"
+                }
+            ]
+        };
+
+        let currentCategory = "all";
+        let currentImages = [];
+        let currentImageIndex = 0;
+
+        // Load pictures on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🖼️ Pictures page loaded');
+            loadPictures();
+            setupFilterListeners();
+        });
+
+        function setupFilterListeners() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentCategory = btn.getAttribute('data-category');
+                    loadPictures();
+                });
+            });
+        }
+
+        function loadPictures() {
+            const picturesGrid = document.getElementById('picturesGrid');
+            
+            let picturesToShow = picturesDatabase.all;
+            if (currentCategory !== 'all') {
+                picturesToShow = picturesDatabase.all.filter(pic => pic.category === currentCategory);
+            }
+            
+            if (picturesToShow.length === 0) {
+                picturesGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-images"></i>
+                        <p>No pictures in this category yet.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            currentImages = picturesToShow;
+            
+            picturesGrid.innerHTML = picturesToShow.map((pic, index) => {
+                if (pic.type === 'quote') {
+                    return `
+                        <div class="picture-card quote-card" onclick="openLightbox(${index})">
+                            <div class="picture-image" style="background-image: url('${pic.imageUrl}')"></div>
+                            <div class="picture-info">
+                                <div class="quote-text">“${escapeHtml(pic.description)}”</div>
+                                <div class="quote-author">— ${escapeHtml(pic.author || 'Anonymous')}</div>
+                                <span class="picture-category">💬 ${getCategoryName(pic.category)}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="picture-card" onclick="openLightbox(${index})">
+                            <div class="picture-image" style="background-image: url('${pic.imageUrl}')"></div>
+                            <div class="picture-info">
+                                <h3 class="picture-title">${escapeHtml(pic.title)}</h3>
+                                <p class="picture-description">${escapeHtml(pic.description)}</p>
+                                <span class="picture-category">${getCategoryIcon(pic.category)} ${getCategoryName(pic.category)}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const image = currentImages[index];
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+            
+            lightboxImage.src = image.imageUrl;
+            
+            if (image.type === 'quote') {
+                lightboxCaption.innerHTML = `<em>"${escapeHtml(image.description)}"</em><br>— ${escapeHtml(image.author || 'Anonymous')}`;
+            } else {
+                lightboxCaption.innerHTML = `<strong>${escapeHtml(image.title)}</strong><br>${escapeHtml(image.description)}`;
+            }
+            
+            lightbox.classList.add('active');
+            
+            // Save to recent in localStorage
+            saveToRecent(image);
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function prevImage() {
+            if (currentImageIndex > 0) {
+                openLightbox(currentImageIndex - 1);
+            } else {
+                openLightbox(currentImages.length - 1);
+            }
+        }
+
+        function nextImage() {
+            if (currentImageIndex < currentImages.length - 1) {
+                openLightbox(currentImageIndex + 1);
+            } else {
+                openLightbox(0);
+            }
+        }
+
+        function saveToRecent(image) {
+            let recentPictures = JSON.parse(localStorage.getItem('balenjeraRecentPictures') || '[]');
+            recentPictures = [image, ...recentPictures.filter(p => p.id !== image.id)];
+            if (recentPictures.length > 20) recentPictures.pop();
+            localStorage.setItem('balenjeraRecentPictures', JSON.stringify(recentPictures));
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                nature: "🌿",
+                motivational: "⭐",
+                calm: "🌊",
+                quotes: "💬",
+                all: "🖼️"
+            };
+            return icons[category] || "🖼️";
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                nature: "Nature",
+                motivational: "Motivation",
+                calm: "Calm",
+                quotes: "Inspirational Quote",
+                all: "All"
+            };
+            return names[category] || category;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                prevImage();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            }
+        });
+    </script>
+</body>
+</html>

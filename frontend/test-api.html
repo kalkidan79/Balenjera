@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API Connection</title>
+</head>
+<body>
+    <h1>Testing Balenjera Backend</h1>
+    <div id="result"></div>
+    
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testing connection...</p>';
+            
+            try {
+                // Test health
+                const healthRes = await fetch('http://localhost:5000/api/health');
+                const healthData = await healthRes.json();
+                resultDiv.innerHTML += `<p>✅ Health Check: ${JSON.stringify(healthData)}</p>`;
+                
+                // Test registration
+                const testUser = {
+                    name: "Test User",
+                    email: `test${Date.now()}@example.com`,
+                    password: "123456",
+                    role: "student"
+                };
+                
+                const registerRes = await fetch('http://localhost:5000/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testUser)
+                });
+                const registerData = await registerRes.json();
+                resultDiv.innerHTML += `<p>✅ Registration: ${JSON.stringify(registerData)}</p>`;
+                
+                resultDiv.innerHTML += '<p style="color:green">✅ Backend is working correctly!</p>';
+                
+            } catch (error) {
+                resultDiv.innerHTML += `<p style="color:red">❌ Error: ${error.message}</p>`;
+                resultDiv.innerHTML += `<p>Make sure backend is running: cd backend && python app.py</p>`;
+            }
+        }
+        
+        testAPI();
+    </script>
+</body>
+</html>

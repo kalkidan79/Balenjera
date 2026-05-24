@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balenjera 🧘 | Healing Tools - Breathing Exercise & Relaxation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Healing Page Specific Styles */
+        body.balenjera-healing {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+
+        .healing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 60px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 i {
+            color: #72efdd;
+            margin-right: 10px;
+        }
+
+        .page-header p {
+            color: #a5b4cb;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Healing Grid */
+        .healing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+        }
+
+        /* Breathing Exercise Card */
+        .breathing-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: #72efdd;
+        }
+
+        .card-subtitle {
+            color: #a5b4cb;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Breathing Circle */
+        .breathing-circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        .breathing-circle {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(94, 91, 255, 0.3);
+            position: relative;
+        }
+
+        .breathing-circle::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: rgba(94, 91, 255, 0.2);
+            z-index: -1;
+            transition: all 0.3s;
+        }
+
+        .breathing-circle.breathing-in::before {
+            animation: pulseIn 4s ease-in-out infinite;
+        }
+
+        .breathing-circle.breathing-out::before {
+            animation: pulseOut 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseIn {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 0.1; }
+        }
+
+        @keyframes pulseOut {
+            0%, 100% { transform: scale(1.3); opacity: 0.1; }
+            50% { transform: scale(1); opacity: 0.5; }
+        }
+
+        .breathing-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .breathing-instruction {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .breathing-timer {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            margin-top: 10px;
+        }
+
+        /* Breathing Controls */
+        .breathing-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            border-radius: 40px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.primary {
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+            border: none;
+        }
+
+        .control-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(94, 91, 255, 0.4);
+        }
+
+        .control-btn.danger {
+            background: rgba(231, 76, 60, 0.2);
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .control-btn.danger:hover {
+            background: rgba(231, 76, 60, 0.4);
+        }
+
+        /* Breathing Settings */
+        .breathing-settings {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-label {
+            color: #a5b4cb;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .duration-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .duration-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .duration-btn.active {
+            background: linear-gradient(135deg, #5e5bff, #ff6b9d);
+            border-color: transparent;
+        }
+
+        .duration-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Tips Card */
+        .tips-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tips-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .tips-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .tips-list li:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(5px);
+        }
+
+        .tips-list li i {
+            font-size: 1.3rem;
+            color: #72efdd;
+            margin-top: 2px;
+        }
+
+        .tips-list li div {
+            flex: 1;
+        }
+
+        .tips-list li strong {
+            color: white;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .tips-list li p {
+            color: #a5b4cb;
+            font-size: 0.85rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Affirmation Section */
+        .affirmation-card {
+            margin-top: 30px;
+            background: linear-gradient(135deg, rgba(94, 91, 255, 0.1), rgba(255, 107, 157, 0.1));
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .affirmation-card:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, rgba(94, 91, 255, 0.15), rgba(255, 107, 157, 0.15));
+        }
+
+        .affirmation-text {
+            font-size: 1.2rem;
+            color: white;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .affirmation-refresh {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            color: #a5b4cb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .healing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .breathing-circle {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .breathing-text {
+                font-size: 1.3rem;
+            }
+            
+            .breathing-timer {
+                font-size: 1.5rem;
+            }
+            
+            .control-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body class="balenjera-healing">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>Balen<span class="logo-highlight">jera</span></span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="chatbot.html"><i class="fas fa-comment-dots"></i> Chatbot</a>
+                <a href="books.html"><i class="fas fa-book"></i> Books</a>
+                <a href="music.html"><i class="fas fa-music"></i> Music</a>
+                <a href="pictures.html"><i class="fas fa-image"></i> Pictures</a>
+                <a href="healing.html" class="active"><i class="fas fa-heartbeat"></i> Healing</a>
+                <div class="nav-buttons">
+                    <a href="dashboard.html" class="btn btn-primary">
+                        <i class="fas fa-user-circle"></i> Dashboard
+                    </a>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="healing-container">
+        <div class="page-header">
+            <h1><i class="fas fa-heartbeat"></i> Healing Space</h1>
+            <p>Find calm, breathe deeply, and nurture your well-being</p>
+        </div>
+
+        <div class="healing-grid">
+            <!-- Breathing Exercise -->
+            <div class="breathing-card">
+                <div class="card-title">
+                    <i class="fas fa-lungs"></i>
+                    <span>Breathing Exercise</span>
+                </div>
+                <div class="card-subtitle">
+                    Follow the circle. Breathe in as it grows, breathe out as it shrinks.
+                </div>
+
+                <div class="breathing-circle-container">
+                    <div class="breathing-circle" id="breathingCircle">
+                        <div class="breathing-text" id="breathingText">Breathe</div>
+                        <div class="breathing-instruction" id="breathingInstruction">Tap to start</div>
+                        <div class="breathing-timer" id="breathingTimer">--</div>
+                    </div>
+                </div>
+
+                <div class="breathing-controls">
+                    <button class="control-btn primary" id="startBreathingBtn">
+                        <i class="fas fa-play"></i> Start
+                    </button>
+                    <button class="control-btn" id="pauseBreathingBtn">
+                        <i class="fas fa-pause"></i> Pause
+                    </button>
+                    <button class="control-btn danger" id="stopBreathingBtn">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                </div>
+
+                <div class="breathing-settings">
+                    <span class="settings-label">⏱️ Session Duration</span>
+                    <div class="duration-buttons">
+                        <button class="duration-btn" data-duration="1">1 min</button>
+                        <button class="duration-btn active" data-duration="3">3 min</button>
+                        <button class="duration-btn" data-duration="5">5 min</button>
+                        <button class="duration-btn" data-duration="10">10 min</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips & Affirmations -->
+            <div>
+                <div class="tips-card">
+                    <div class="card-title">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Wellness Tips</span>
+                    </div>
+                    
+                    <ul class="tips-list">
+                        <li>
+                            <i class="fas fa-lungs"></i>
+                            <div>
+                                <strong>Box Breathing Technique</strong>
+                                <p>Inhale 4 sec → Hold 4 sec → Exhale 4 sec → Hold 4 sec. Repeat for calm.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-hand-sparkles"></i>
+                            <div>
+                                <strong>Grounding Exercise</strong>
+                                <p>Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-bed"></i>
+                            <div>
+                                <strong>Better Sleep</strong>
+                                <p>Aim for 7-8 hours. No screens 30 min before bed. Read or listen to calm music.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-water"></i>
+                            <div>
+                                <strong>Hydration Reminder</strong>
+                                <p>Drink water when you wake up, before meals, and before bed. Dehydration affects mood.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-walking"></i>
+                            <div>
+                                <strong>Movement Break</strong>
+                                <p>Even 5 minutes of walking or stretching can reduce anxiety significantly.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Daily Affirmation -->
+                <div class="affirmation-card" id="affirmationCard">
+                    <div class="affirmation-text" id="affirmationText">
+                        "You are stronger than you know. You have survived every difficult day so far."
+                    </div>
+                    <div class="affirmation-refresh">
+                        <i class="fas fa-sync-alt"></i> Tap for new affirmation
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // ==================== BREATHING EXERCISE ====================
+        let breathingInterval = null;
+        let isBreathing = false;
+        let breathPhase = 'inhale'; // inhale, hold1, exhale, hold2
+        let phaseTime = 0;
+        let sessionRemaining = 180; // 3 minutes in seconds
+        let selectedDuration = 180;
+        let currentCycle = 0;
+        
+        // Phase durations in seconds
+        const phaseDurations = {
+            inhale: 4,
+            hold1: 4,
+            exhale: 4,
+            hold2: 4
+        };
+        
+        const breathingCircle = document.getElementById('breathingCircle');
+        const breathingText = document.getElementById('breathingText');
+        const breathingInstruction = document.getElementById('breathingInstruction');
+        const breathingTimer = document.getElementById('breathingTimer');
+        
+        // Duration selection
+        document.querySelectorAll('.duration-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedDuration = parseInt(btn.getAttribute('data-duration')) * 60;
+                sessionRemaining = selectedDuration;
+                updateTimerDisplay();
+            });
+        });
+        
+        function startBreathing() {
+            if (isBreathing) return;
+            
+            isBreathing = true;
+            breathPhase = 'inhale';
+            phaseTime = 0;
+            currentCycle = 0;
+            sessionRemaining = selectedDuration;
+            
+            updateTimerDisplay();
+            breathingInstruction.textContent = 'Breathe in slowly...';
+            breathingCircle.classList.add('breathing-in');
+            
+            breathingInterval = setInterval(updateBreathing, 1000);
+        }
+        
+        function updateBreathing() {
+            if (!isBreathing) return;
+            
+            // Update session timer
+            if (sessionRemaining > 0) {
+                sessionRemaining--;
+                updateTimerDisplay();
+                
+                if (sessionRemaining === 0) {
+                    stopBreathing();
+                    breathingInstruction.textContent = 'Session complete! 🌸';
+                    breathingCircle.classList.remove('breathing-in', 'breathing-out');
+                    return;
+                }
+            }
+            
+            // Update breath phase
+            phaseTime++;
+            
+            switch(breathPhase) {
+                case 'inhale':
+                    if (phaseTime >= phaseDurations.inhale) {
+                        breathPhase = 'hold1';
+                        phaseTime = 0;
+                        breathingText.textContent = 'Hold';
+                        breathingInstruction.textContent = 'Hold your breath...';
+                        breathingCircle.classList.remove('breathing-in');
+                        breathingCircle.classList.add('breathing-out');
+                    } else {
+                        const remaining = phaseDurations.inhale - phaseTime;
+                        breathingText.textContent = 'Breathe In';
+                        breathingInstruction.textContent = `${remaining} more seconds...`;
+                    }
+                    break;
+                    
+                case 'hold1':
+                    if (phaseTime >= phaseDurations.hold1) {
+                        breathPhase = 'exhale';
+                        phaseTime = 0;
+                        breathingText.textContent = 'Breathe Out';
+                        breathingInstruction.textContent = 'Exhale slowly...';
+                    } else {
+                        const remaining = phaseDurations.hold1 - phaseTime;
+                        breathingText.textContent = 'Hold';
+                        breathingInstruction.textContent = `${remaining} more seconds...`;
+                    }
+                    break;
+                    
+                case 'exhale':
+                    if (phaseTime >= phaseDurations.exhale) {
+                        breathPhase = 'hold2';
+                        phaseTime = 0;
+                        breathingText.textContent = 'Hold';
+                        breathingInstruction.textContent = 'Empty your lungs...';
+                    } else {
+                        const remaining = phaseDurations.exhale - phaseTime;
+                        breathingText.textContent = 'Breathe Out';
+                        breathingInstruction.textContent = `${remaining} more seconds...`;
+                    }
+                    break;
+                    
+                case 'hold2':
+                    if (phaseTime >= phaseDurations.hold2) {
+                        breathPhase = 'inhale';
+                        phaseTime = 0;
+                        currentCycle++;
+                        breathingText.textContent = 'Breathe In';
+                        breathingInstruction.textContent = 'Fresh air in...';
+                        breathingCircle.classList.remove('breathing-out');
+                        breathingCircle.classList.add('breathing-in');
+                    } else {
+                        const remaining = phaseDurations.hold2 - phaseTime;
+                        breathingText.textContent = 'Hold';
+                        breathingInstruction.textContent = `${remaining} more seconds...`;
+                    }
+                    break;
+            }
+        }
+        
+        function pauseBreathing() {
+            if (!isBreathing) return;
+            isBreathing = false;
+            if (breathingInterval) {
+                clearInterval(breathingInterval);
+                breathingInterval = null;
+            }
+            breathingInstruction.textContent = 'Paused. Tap Start to continue.';
+            breathingCircle.classList.remove('breathing-in', 'breathing-out');
+        }
+        
+        function stopBreathing() {
+            isBreathing = false;
+            if (breathingInterval) {
+                clearInterval(breathingInterval);
+                breathingInterval = null;
+            }
+            breathPhase = 'inhale';
+            phaseTime = 0;
+            sessionRemaining = selectedDuration;
+            updateTimerDisplay();
+            breathingText.textContent = 'Breathe';
+            breathingInstruction.textContent = 'Tap to start';
+            breathingCircle.classList.remove('breathing-in', 'breathing-out');
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(sessionRemaining / 60);
+            const seconds = sessionRemaining % 60;
+            breathingTimer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Breathing controls
+        document.getElementById('startBreathingBtn').addEventListener('click', startBreathing);
+        document.getElementById('pauseBreathingBtn').addEventListener('click', pauseBreathing);
+        document.getElementById('stopBreathingBtn').addEventListener('click', stopBreathing);
+        
+        // Tap circle to start
+        breathingCircle.addEventListener('click', () => {
+            if (!isBreathing) {
+                startBreathing();
+            }
+        });
+        
+        // ==================== DAILY AFFIRMATIONS ====================
+        const affirmations = [
+            "You are enough. Exactly as you are right now.",
+            "This feeling will pass. You have survived every difficult day so far.",
+            "You deserve peace, joy, and kindness - especially from yourself.",
+            "Growth is not linear. Every small step forward counts.",
+            "You are not your thoughts. You are the one observing them.",
+            "It's okay to rest. You don't have to earn rest.",
+            "Your feelings are valid. All of them.",
+            "You've overcome challenges before. You will overcome this too.",
+            "You are stronger than you know, braver than you feel, and more loved than you imagine.",
+            "Today, I choose peace over perfection.",
+            "I am worthy of love, respect, and happiness.",
+            "My journey is my own. I don't need to compare it to anyone else's.",
+            "Each breath is a new beginning.",
+            "I release what I cannot control.",
+            "I am exactly where I need to be right now."
+        ];
+        
+        let currentAffirmationIndex = Math.floor(Math.random() * affirmations.length);
+        
+        function updateAffirmation() {
+            currentAffirmationIndex = (currentAffirmationIndex + 1) % affirmations.length;
+            const affirmationText = document.getElementById('affirmationText');
+            affirmationText.textContent = `"${affirmations[currentAffirmationIndex]}"`;
+            
+            // Add bounce animation
+            affirmationText.style.animation = 'none';
+            setTimeout(() => {
+                affirmationText.style.animation = 'fadeIn 0.3s ease';
+            }, 10);
+        }
+        
+        document.getElementById('affirmationCard').addEventListener('click', updateAffirmation);
+        
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            if (breathingInterval) {
+                clearInterval(breathingInterval);
+            }
+        });
+    </script>
+</body>
+</html>
