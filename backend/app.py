@@ -1,13 +1,12 @@
 """
 Balenjera (Best Friend) - Student Wellness AI Chatbot
-FULLY WORKING Gemini API Integration
+Complete working version for Python 3.14+ and Render deployment
 """
 
 import os
 import logging
-import time
 from datetime import datetime
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session, send_from_directory
 from flask_cors import CORS
 import google.generativeai as genai
 from dotenv import load_dotenv
@@ -16,7 +15,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'balenjera-secret-key-2024'
+app.secret_key = os.getenv('SECRET_KEY', 'balenjera-secret-key-2024')
 CORS(app, origins='*', supports_credentials=True)
 
 PORT = int(os.getenv('PORT', 5000))
@@ -34,7 +33,7 @@ gemini_model = None
 gemini_available = False
 MODEL_NAME = None
 
-# List of working models to try (in order of preference)
+# Working models for Python 3.14+
 WORKING_MODELS = [
     "models/gemini-2.0-flash-lite",
     "models/gemini-1.5-flash",
@@ -43,14 +42,12 @@ WORKING_MODELS = [
 
 if not GEMINI_API_KEY:
     print("❌ ERROR: No API key found!")
-    print("   Please add GEMINI_API_KEY to your .env file")
-    print("   Get a free key at: https://aistudio.google.com/app/apikey")
+    print("   Please add GEMINI_API_KEY to Render environment variables")
 else:
     try:
         genai.configure(api_key=GEMINI_API_KEY)
         print("✅ API Key configured")
         
-        # Try each model until one works
         for model_name in WORKING_MODELS:
             try:
                 print(f"🎯 Testing model: {model_name}")
@@ -62,15 +59,11 @@ else:
                     MODEL_NAME = model_name
                     gemini_available = True
                     print(f"✅ Gemini WORKING with model: {MODEL_NAME}")
-                    print(f"   Test response: {response.text}")
                     break
             except Exception as e:
                 error_msg = str(e)
                 if "429" in error_msg:
                     print(f"⚠️ Model {model_name} quota exceeded, trying next...")
-                    time.sleep(2)
-                elif "404" in error_msg:
-                    print(f"⚠️ Model {model_name} not found, trying next...")
                 else:
                     print(f"⚠️ Model {model_name} failed: {error_msg[:100]}")
                     
@@ -78,21 +71,12 @@ else:
         print(f"❌ Gemini init error: {str(e)}")
 
 if not gemini_available:
-    print("\n" + "!"*60)
-    print("⚠️ GEMINI API NOT AVAILABLE - Using Fallback Mode")
-    print("!"*60)
-    print("\nTo fix Gemini:")
-    print("1. Get a new API key: https://aistudio.google.com/app/apikey")
-    print("2. Update your .env file with the new key")
-    print("3. Restart the server: python app.py")
-    print("!"*60 + "\n")
+    print("\n⚠️ GEMINI API NOT AVAILABLE - Using Fallback Mode")
 
 print("="*60 + "\n")
 
 # ==================== WELLNESS PROMPT ====================
 def get_wellness_prompt(user_message, user_mood=None, mode="support"):
-    """Create a structured, effective prompt for Gemini"""
-    
     mood_context = f"The user indicated they are feeling: {user_mood}" if user_mood else ""
     
     prompt = f"""You are Balenjera (meaning "Best Friend" in Amharic), an AI wellness companion for boarding school students.
@@ -113,26 +97,18 @@ Respond as Balenjera (short, warm, never judging):"""
     
     return prompt
 
-# ==================== FALLBACK (only when Gemini is unavailable) ====================
+# ==================== FALLBACK RESPONSES ====================
 def get_fallback_response(message):
-    """Intelligent fallback when Gemini API is unavailable"""
     msg = message.lower()
     
-    # Exam/academic stress
     if any(word in msg for word in ['exam', 'failed', 'grade', 'test', 'study']):
         return "I hear that you're stressed about academics. Failing feels terrible, but it doesn't define your worth. Would you like to talk about what happened?"
     
-    # Feeling judged
     if 'judge' in msg:
         return "Being judged by others hurts deeply. Other people's opinions say more about them than about you. Your worth isn't determined by what others think."
     
-    # Loneliness
     if any(word in msg for word in ['lonely', 'alone', 'nobody']):
         return "Loneliness hurts deeply. You are not as alone as it feels right now. I'm here with you. Would you like to talk more?"
-    
-    # General distress
-    if any(word in msg for word in ['bad', 'terrible', 'awful']):
-        return "That sounds really hard. I'm sorry you're going through this. I'm here to listen without judging."
     
     return "I hear you, and I'm here with you. What you're feeling is valid. Would you like to talk more about what's on your mind?"
 
@@ -143,13 +119,18 @@ flagged_cases = []
 # ==================== API ENDPOINTS ====================
 
 @app.route('/')
-def home():
-    return jsonify({
-        "name": "Balenjera Wellness API",
-        "status": "running",
-        "gemini_available": gemini_available,
-        "model": MODEL_NAME if gemini_available else "fallback-mode"
-    })
+def serve_index():
+    """Serve the home page"""
+    return send_from_directory('../frontend', 'index.html')
+
+@app.route('/<path:path>')
+def serve_frontend(path):
+    """Serve all frontend files (HTML, CSS, JS)"""
+    frontend_path = os.path.join('../frontend', path)
+    if os.path.exists(frontend_path):
+        return send_from_directory('../frontend', path)
+    else:
+        return send_from_directory('../frontend', 'index.html')
 
 @app.route('/api/health', methods=['GET'])
 def health():
@@ -162,13 +143,11 @@ def health():
 
 @app.route('/api/test-gemini', methods=['GET'])
 def test_gemini():
-    """Direct test endpoint for Gemini"""
     if not gemini_available:
         return jsonify({
             "success": False,
             "error": "Gemini not available",
-            "message": "Please check your API key in .env file",
-            "solution": "Get a new key at https://aistudio.google.com/app/apikey"
+            "message": "Check your API key in Render environment variables"
         }), 503
     
     try:
@@ -176,15 +155,10 @@ def test_gemini():
         return jsonify({
             "success": True,
             "response": response.text,
-            "gemini_available": True,
-            "model": MODEL_NAME
+            "gemini_available": True
         })
     except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e),
-            "message": "Quota may be exceeded. Wait a minute or get a new API key."
-        }), 500
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -245,20 +219,18 @@ def login():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    """Main chat endpoint - PRIORITIZES GEMINI API"""
     try:
         data = request.get_json()
         user_message = data.get('message', '').strip()
         user_mood = data.get('mood', None)
         chat_mode = data.get('mode', 'support')
-        user_email = session.get('user_email', 'anonymous')
         
         if not user_message:
             return jsonify({"error": "Message required"}), 400
         
         logger.info(f"📨 Chat: '{user_message[:60]}...'")
         
-        # STEP 1: Emergency detection (highest priority)
+        # Emergency detection
         emergency_keywords = ['hurt myself', 'self harm', 'kill myself', 'suicide', 'disappear', 'end my life', 'want to die']
         if any(kw in user_message.lower() for kw in emergency_keywords):
             emergency_response = """⚠️ I'm really glad you reached out.
@@ -269,24 +241,13 @@ Please contact help immediately:
 
 💙 You matter. Please talk to someone now."""
             
-            if user_email != 'anonymous':
-                flagged_cases.append({
-                    "id": len(flagged_cases) + 1,
-                    "student_email": user_email,
-                    "student_name": users.get(user_email, {}).get('name', 'Student'),
-                    "message": user_message,
-                    "severity": "urgent",
-                    "timestamp": datetime.now().isoformat()
-                })
-            
             return jsonify({
                 "success": True,
                 "response": emergency_response,
-                "severity": "urgent",
-                "using_gemini": False
+                "severity": "urgent"
             })
         
-        # STEP 2: Use Gemini API (if available) - THIS IS THE PRIORITY
+        # Try Gemini API
         if gemini_available and gemini_model:
             try:
                 prompt = get_wellness_prompt(user_message, user_mood, chat_mode)
@@ -294,89 +255,43 @@ Please contact help immediately:
                 
                 if response and response.text:
                     ai_response = response.text.strip()
-                    # Clean up markdown
                     ai_response = ai_response.replace('**', '').replace('*', '').replace('##', '')
                     
-                    logger.info(f"✅ Gemini API response generated ({len(ai_response)} chars)")
-                    
+                    logger.info(f"✅ Gemini response generated")
                     return jsonify({
                         "success": True,
                         "response": ai_response,
-                        "severity": "normal",
-                        "using_gemini": True,
-                        "model_used": MODEL_NAME
+                        "using_gemini": True
                     })
-                else:
-                    logger.warning("Gemini returned empty response")
-                    
             except Exception as e:
-                error_msg = str(e)
-                logger.error(f"❌ Gemini API error: {error_msg[:200]}")
-                
-                if "429" in error_msg:
-                    return jsonify({
-                        "success": False,
-                        "error": "QUOTA_EXCEEDED",
-                        "message": "Gemini API quota exceeded. Please wait a minute or get a new API key.",
-                        "solution": "Get a new key at https://aistudio.google.com/app/apikey"
-                    }), 429
-                else:
-                    return jsonify({
-                        "success": False,
-                        "error": str(error_msg),
-                        "message": "Gemini API error. Check your API key."
-                    }), 500
+                logger.warning(f"Gemini error: {str(e)[:100]}")
         
-        # STEP 3: If Gemini not available, use fallback
-        logger.warning("⚠️ Gemini not available - using fallback response")
-        fallback_response = get_fallback_response(user_message)
+        # Fallback
+        logger.info("📝 Using fallback response")
+        response = get_fallback_response(user_message)
         
         return jsonify({
             "success": True,
-            "response": fallback_response,
-            "severity": "normal",
-            "using_gemini": False,
-            "note": "Gemini API unavailable. Check your API key."
+            "response": response,
+            "using_gemini": False
         })
         
     except Exception as e:
-        logger.error(f"❌ Chat error: {str(e)}")
+        logger.error(f"Chat error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/flagged-cases', methods=['GET'])
 def get_flagged():
     return jsonify({"success": True, "cases": flagged_cases})
 
+# ==================== RUN SERVER ====================
 if __name__ == '__main__':
     print("\n" + "="*60)
     print("🌟 BALENJERA WELLNESS API - STARTING 🌟")
     print("="*60)
     print(f"📡 Server: http://localhost:{PORT}")
+    print(f"🤖 Python Version: {os.sys.version}")
     print(f"🤖 Gemini Status: {'✅ WORKING' if gemini_available else '❌ NOT AVAILABLE'}")
-    if gemini_available:
-        print(f"🤖 Model: {MODEL_NAME}")
-    else:
-        print("\n⚠️ TO FIX GEMINI:")
-        print("   1. Get new API key: https://aistudio.google.com/app/apikey")
-        print("   2. Update .env file")
-        print("   3. Restart server")
-    print("="*60)
-    
-    # Test Gemini at startup
-    if gemini_available:
-        try:
-            test_response = gemini_model.generate_content("Say 'ready'")
-            if test_response and test_response.text:
-                print(f"\n✅ Gemini test successful: {test_response.text}")
-        except Exception as e:
-            print(f"\n⚠️ Gemini test failed: {str(e)[:100]}")
-    
-    print("\n📋 Test Commands:")
-    print(f"   Health:  GET http://localhost:{PORT}/api/health")
-    print(f"   Test Gemini: GET http://localhost:{PORT}/api/test-gemini")
     print("="*60 + "\n")
     
-    app.run(host='0.0.0.0', port=PORT, debug=True)
-    if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=PORT, debug=False)
