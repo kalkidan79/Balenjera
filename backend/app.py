@@ -144,24 +144,32 @@ def chat():
         except Exception as e:
             print(f"Gemini error: {e}")
     
-    # Fallback responses
+        # Fallback responses - IMPROVED
     msg = user_message.lower()
-    if 'sad' in msg:
-        reply = "I hear that you're feeling sad. That's completely valid. Would you like to talk more about what's bothering you? I'm here to listen. 💙"
-    elif 'anxious' in msg or 'stress' in msg:
-        reply = "Anxiety can be really uncomfortable. Let's try a deep breath together. Breathe in... 1-2-3-4. Hold... 1-2-3-4. Breathe out... 1-2-3-4. How do you feel now? 🍃"
-    elif 'lonely' in msg or 'alone' in msg:
-        reply = "Loneliness hurts deeply. You are not as alone as it feels right now. I'm here with you. Would you like to talk more? 🫂"
-    elif 'exam' in msg or 'fail' in msg or 'grade' in msg:
-        reply = "Academic stress is real. Failing doesn't define your worth. You're doing your best, and that's enough. Want to talk about what happened?"
-    else:
-        reply = "I hear you, and I'm here with you. What you're feeling is valid. Would you like to tell me more? 💙"
     
-    return jsonify({
-        "success": True,
-        "response": reply,
-        "using_gemini": False
-    })
+    if 'sad' in msg:
+        reply = "I'm sorry you're feeling sad. That's really hard. Can you tell me what's making you feel this way? Sometimes sharing helps lighten the load. I'm here for you. 💙"
+    
+    elif 'what should i do' in msg or 'what shall i do' in msg or 'advice' in msg:
+        reply = "Here are some things that might help:\n\n🌿 Take 3 deep breaths slowly\n🌿 Drink a glass of water\n🌿 Step outside for 2 minutes\n🌿 Text one friend 'thinking of you'\n\nYou don't have to do everything. Just pick ONE small thing. You've got this. 💪"
+    
+    elif 'lonely' in msg or 'alone' in msg:
+        reply = "Feeling lonely is so hard. I want you to know: You are not alone. Many students feel this way, even when surrounded by people. Would you like to hear about some ways to feel more connected? 🫂"
+    
+    elif 'anxious' in msg or 'anxiety' in msg or 'stress' in msg:
+        reply = "Anxiety can feel overwhelming. Let's try something right now:\n\nBreathe in... 1-2-3-4\nHold... 1-2-3-4\nBreathe out... 1-2-3-4\n\nFeel a little calmer? Want to try again? 🍃"
+    
+    elif 'fail' in msg or 'exam' in msg or 'grade' in msg:
+        reply = "I hear you. Failing an exam feels terrible, especially when parents are upset. But listen to me: ONE exam does NOT define your worth or your future. You are still smart, still capable, still valuable. Let's make a small plan together? 📚"
+    
+    elif 'angry' in msg or 'mad' in msg:
+        reply = "Anger is a valid emotion. It often means something important to you is being hurt. Before reacting, try: clench your fists tight... then slowly release. Take 5 deep breaths. You have every right to be angry. Let's find a healthy way to release it. 🔥"
+    
+    elif 'thank' in msg:
+        reply = "You're so welcome! I'm really glad you reached out. Remember, I'm always here for you, anytime. Keep going - you're doing great! 💙"
+    
+    else:
+        reply = "I hear you, and I'm really glad you're sharing this with me. What you're feeling is valid. Would you like to tell me more, or shall we try a breathing exercise together? I'm here either way. 💙"
 
 @app.route('/api/flagged-cases', methods=['GET'])
 def get_flagged():
